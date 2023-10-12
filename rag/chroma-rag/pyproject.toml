@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "faiss-rag"
+name = "chroma-rag"
 version = "0.1.0"
 description = ""
 authors = ["Erick Friis <erick@langchain.dev>"]
@@ -9,8 +9,8 @@ readme = "README.md"
 python = "^3.11"
 langchain = "^0.0.313"
 openai = "^0.28.1"
-faiss-cpu = "^1.7.4"
 tiktoken = "^0.5.1"
+chromadb = "^0.4.14"
 
 
 [build-system]
