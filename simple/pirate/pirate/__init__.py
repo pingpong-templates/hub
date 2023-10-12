@@ -6,7 +6,7 @@ prompt = ChatPromptTemplate.from_messages(
     [
         (
             "system",
-            "You are a helpful assistant who translates {input_language} to {output_language}",
+            "You are a helpful assistant who speaks like a pirate",
         ),
         ("human", "{text}"),
     ]
