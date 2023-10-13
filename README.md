@@ -6,28 +6,28 @@ Packages that can be easily hosted by LangServe using the `langserve` cli.
 
 Still working through some global virtual environment bugs for the cli. For now, the following works for me:
 ```bash
-# from langserve-hub dir
-alias langserve="python $(pwd)/cli/langservehub/cli.py"
-cd cli
+# this assumes you have github ssh set up
+pip install --upgrade langservehub
+# alternative: pip install --upgrade git+https://github.com:langchain-ai/langserve-hub.git#subdirectory=cli
+
+# this is only required because this repo is currently private
+export GITHUB_PAT="<github-personal-access-token>"
+
+langservehub new my-app
+cd my-app/packages
+
+# download a package for editing
+langserve download simple/pirate
+
+# install it in the app
+cd ../app
 poetry install
-source .venv/bin/activate
+langserve add ../pirate
 
-# go to "fake" new project
-cd ../newproject
+# also add a url package
+langserve add rag/chroma-rag
 
-# get your github token by clicking "raw" on this file
-# and copying the token queryparam
-# https://github.com/langchain-ai/langserve-hub/blob/main/simple/pirate/pyproject.toml
-
-# this is only because it's a private repo
-# pretty sure a PAT also works
-
-export GITHUB_TOKEN="<token>"
-
-# add pirate endpoint
-langserve add simple/pirate
-
-# serve
+# start the server
 langserve serve
 ```
 

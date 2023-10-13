@@ -17,7 +17,7 @@ BASE_URL = "https://api.github.com/repos/langchain-ai/langserve-hub/contents/"
 
 from github import Github, Auth
 
-g = Github(auth=Auth.Token(token=os.environ["GITHUB_TOKEN"]))
+g = Github(auth=Auth.Token(token=os.environ["GITHUB_PAT"]))
 
 
 async def download_github_path(path: str, local_dest: str):
@@ -62,7 +62,7 @@ app = typer.Typer(no_args_is_help=True, add_completion=False)
 
 
 class PyProject:
-    def __init__(self, data: dict, path: str | None):
+    def __init__(self, data: dict, path: str | None = None):
         self.data = data
         self.path = path
 
@@ -79,7 +79,7 @@ class PyProject:
                 data = load_toml(f)
             return cls(data, None)
         except request.HTTPError as e:
-            raise ValueError(f"Consider updating your GITHUB_TOKEN") from e
+            raise ValueError(f"Consider updating your GITHUB_PAT") from e
 
     def save(self):
         if self.path is None:
@@ -173,10 +173,12 @@ def _package_to_pyproject(package: str):
     if package.startswith(".") or package.startswith("/"):
         # package_type = "path"
         return f"{package}/pyproject.toml"
+
+    g.get_repo("langchain-ai/langserve-hub").get_contents(
+        Path(package) / "pyproject.toml"
+    )
     tokenparam = (
-        ""
-        if not os.environ.get("GITHUB_TOKEN")
-        else f"?token={os.environ['GITHUB_TOKEN']}"
+        "" if not os.environ.get("GITHUB_PAT") else f"?token={os.environ['GITHUB_PAT']}"
     )
     return f"https://raw.githubusercontent.com/langchain-ai/langserve-hub/main/{package}/pyproject.toml{tokenparam}"
 
@@ -192,8 +194,12 @@ def add(
     ] = None,
 ):
     # get pyproject
-    package_pyproject_url = _package_to_pyproject(package)
-    package_pyproject = PyProject.from_url(package_pyproject_url)
+    contents = (
+        g.get_repo("langchain-ai/langserve-hub")
+        .get_contents(Path(package) / "pyproject.toml")
+        .content
+    )
+    package_pyproject = PyProject(contents)
 
     # validate it's langserve-compatible
     if not package_pyproject.is_langserve():
