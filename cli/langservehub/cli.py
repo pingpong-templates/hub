@@ -50,9 +50,9 @@ class PyProject:
     def is_langserve(self):
         return "langserve" in self.data["tool"]
 
-    def add_langserve_path(self, path: str, module_name: str):
+    def add_langserve_path(self, path: str, module: tuple[str, str]):
         paths = self._get_langserve_path_dict()
-        paths[path] = module_name
+        paths[path] = module
         self._set_langserve_path_dict(paths)
 
     def remove_langserve_path(self, path: str):
@@ -64,10 +64,17 @@ class PyProject:
         return self._get_langserve_path_dict()
 
     def get_langserve_export(self):
-        chain = self.data["tool"].get("langserve", {}).get("export")
-        if chain is None:
-            raise ValueError("No chain was exported at `tool.langserve.export`")
-        return chain
+        module = self.data["tool"].get("langserve", {}).get("export_module")
+        if module is None:
+            raise ValueError(
+                "No module name was exported at `tool.langserve.export_module`"
+            )
+        attr = self.data["tool"].get("langserve", {}).get("export_attr")
+        if attr is None:
+            raise ValueError(
+                "No attr name was exported at `tool.langserve.export_attr`"
+            )
+        return module, attr
 
 
 def _load_pyproject():
@@ -157,7 +164,6 @@ def serve():
     typer.echo("Successfully installed missing dependencies")
 
     curr_data = _load_pyproject()
-    langserve = curr_data["tool"].get("langserve", {})
 
     from fastapi import FastAPI
     import uvicorn
@@ -165,9 +171,8 @@ def serve():
 
     fastapp = FastAPI()
 
-    for k, v in langserve.items():
+    for k, v in curr_data.get_langserve_paths().items():
         mod = __import__(v)
-        chain = mod.chain
         add_routes(fastapp, chain, path=k)
 
     uvicorn.run(fastapp, host="localhost", port=8000)
