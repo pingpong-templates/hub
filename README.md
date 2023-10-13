@@ -6,9 +6,7 @@ Packages that can be easily hosted by LangServe using the `langserve` cli.
 
 Still working through some global virtual environment bugs for the cli. For now, the following works for me:
 ```bash
-# this assumes you have github ssh set up
 pip install --upgrade langservehub
-# alternative: pip install --upgrade git+https://github.com:langchain-ai/langserve-hub.git#subdirectory=cli
 
 # this is only required because this repo is currently private
 export GITHUB_PAT="<github-personal-access-token>"
@@ -28,6 +26,8 @@ langservehub add ../packages/pirate
 langservehub add rag/chroma-rag
 
 # start the server
+# needs to be `poetry run` currently because otherwise it'll use your
+# global instance, which doesn't have the inner packages installed
 poetry run langservehub serve
 ```
 
