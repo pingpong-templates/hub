@@ -219,7 +219,8 @@ def add(
     # validate it's a langserve package
 
     # poetry install it from git
-    api_path = path or f"/{package}"
+    shortpackage = package.split("/")[-1]
+    api_path = path or f"/{shortpackage}"
 
     pyproject = _load_pyproject()
     pyproject.add_langserve_path(api_path, package_pyproject.get_langserve_export())
