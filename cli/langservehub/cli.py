@@ -97,7 +97,9 @@ def _package_to_poetry(package: str):
         return package
 
     # if it's hub, have to add base path
-    return f"https://github.com/langchain-ai/langserve-hub.git#subdirectory={package}"
+    return (
+        f"git+https://github.com/langchain-ai/langserve-hub.git#subdirectory={package}"
+    )
 
 
 def _package_to_pyproject(package: str):
@@ -138,8 +140,6 @@ def add(
     subprocess.run(f"poetry add {package_path}", shell=True)
 
     # validate it's a langserve package
-
-    typer.echo(f"Successfully added {package}")
 
     # poetry install it from git
     api_path = path or "/{package}"
