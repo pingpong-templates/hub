@@ -153,7 +153,6 @@ def new(
     ] = None
 ):
     # copy over template from ./project-template
-    # and then run poetry install
     download("cli/project-template", name)
 
 
@@ -194,12 +193,16 @@ def add(
     ] = None,
 ):
     # get pyproject
-    contents = (
-        g.get_repo("langchain-ai/langserve-hub")
-        .get_contents(Path(package) / "pyproject.toml")
-        .content
-    )
-    package_pyproject = PyProject(contents)
+    pyproject_path = Path(package) / "pyproject.toml"
+    if package.startswith(".") or package.startswith("/"):
+        package_pyproject = PyProject.load(pyproject_path)
+    else:
+        contents = (
+            g.get_repo("langchain-ai/langserve-hub")
+            .get_contents(Path(package) / "pyproject.toml")
+            .content
+        )
+        package_pyproject = PyProject(contents)
 
     # validate it's langserve-compatible
     if not package_pyproject.is_langserve():

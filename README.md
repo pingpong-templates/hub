@@ -17,18 +17,18 @@ langservehub new my-app
 cd my-app/packages
 
 # download a package for editing
-langserve download simple/pirate
+langservehub download simple/pirate
 
 # install it in the app
 cd ../app
 poetry install
-langserve add ../pirate
+langservehub add ../packages/pirate
 
 # also add a url package
-langserve add rag/chroma-rag
+langservehub add rag/chroma-rag
 
 # start the server
-langserve serve
+langservehub serve
 ```
 
 ## Data Format
