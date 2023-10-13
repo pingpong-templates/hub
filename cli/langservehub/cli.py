@@ -66,6 +66,7 @@ class PyProject:
     def get_langserve_export(self):
         module = self.data["tool"].get("langserve", {}).get("export_module")
         if module is None:
+            print(self.data)
             raise ValueError(
                 "No module name was exported at `tool.langserve.export_module`"
             )
@@ -149,7 +150,7 @@ def add(
     # validate it's a langserve package
 
     # poetry install it from git
-    api_path = path or "/{package}"
+    api_path = path or f"/{package}"
 
     pyproject = _load_pyproject()
     pyproject.add_langserve_path(api_path, package_pyproject.get_langserve_export())
@@ -172,8 +173,12 @@ def serve():
     fastapp = FastAPI()
 
     for k, v in curr_data.get_langserve_paths().items():
-        mod = __import__(v)
+        module, attr = v
+        mod = __import__(module)
+        chain = getattr(mod, attr)
         add_routes(fastapp, chain, path=k)
+
+    print("Check out the docs at http://localhost:8000/docs")
 
     uvicorn.run(fastapp, host="localhost", port=8000)
 
