@@ -1,5 +1,6 @@
 import os
 import typer
+import asyncio
 from typing import Annotated, Optional
 from pathlib import Path
 
@@ -8,6 +9,8 @@ from tomli_w import dump as dump_toml
 from urllib import request
 
 import subprocess
+
+from .github import download_github_path
 
 
 app = typer.Typer(no_args_is_help=True, add_completion=False)
@@ -156,6 +159,17 @@ def add(
     pyproject.add_langserve_path(api_path, package_pyproject.get_langserve_export())
 
     pyproject.save()
+
+
+@app.command()
+def download(
+    package: Annotated[
+        str, typer.Argument(help="The package in LangServe Hub like `simple/pirate`")
+    ],
+    localpath: Annotated[str, typer.Argument(help="The local path to download to")],
+):
+    asyncio.run(download_github_path(package, localpath))
+    print(f"Successfully downloaded {package} to {localpath}")
 
 
 @app.command()
