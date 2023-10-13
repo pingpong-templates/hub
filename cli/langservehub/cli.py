@@ -5,6 +5,7 @@ from typing import Annotated, Optional, List
 from pathlib import Path
 
 from tomllib import load as load_toml
+from tomllib import loads as loads_toml
 from tomli_w import dump as dump_toml
 from urllib import request
 
@@ -73,11 +74,10 @@ class PyProject:
         return cls(data, path)
 
     @classmethod
-    def from_url(cls, url: str):
+    def loads(cls, data: str):
         try:
-            with request.urlopen(url) as f:
-                data = load_toml(f)
-            return cls(data, None)
+            d = loads_toml(data)
+            return cls(d, None)
         except request.HTTPError as e:
             raise ValueError(f"Consider updating your GITHUB_PAT") from e
 
@@ -193,16 +193,17 @@ def add(
     ] = None,
 ):
     # get pyproject
-    pyproject_path = Path(package) / "pyproject.toml"
+    pyproject_path = str(Path(package) / "pyproject.toml")
     if package.startswith(".") or package.startswith("/"):
         package_pyproject = PyProject.load(pyproject_path)
     else:
-        contents = (
+        contents_b64 = (
             g.get_repo("langchain-ai/langserve-hub")
-            .get_contents(Path(package) / "pyproject.toml")
+            .get_contents(pyproject_path)
             .content
         )
-        package_pyproject = PyProject(contents)
+        contents = base64.b64decode(contents_b64).decode("utf-8")
+        package_pyproject = PyProject.loads(contents)
 
     # validate it's langserve-compatible
     if not package_pyproject.is_langserve():
