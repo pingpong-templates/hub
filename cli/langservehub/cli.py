@@ -134,9 +134,8 @@ def _load_pyproject():
 @app.command()
 def list():
     curr_data = _load_pyproject()
-    langserve = curr_data["tool"].get("langserve", {})
-    for k, v in langserve.items():
-        typer.echo(f"{k} -> {v}")
+    for k, v in curr_data.get_langserve_paths().items():
+        typer.echo(f"{k} -> {'.'.join(v)}")
 
 
 @app.command()
