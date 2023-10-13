@@ -13,6 +13,7 @@ fastapi = "^0.103.2"
 uvicorn = "^0.23.2"
 sse-starlette = "^1.6.5"
 typer = "^0.9.0"
+langservehub = "^0.1.0"
 
 [build-system]
 requires = [

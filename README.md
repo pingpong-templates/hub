@@ -28,7 +28,7 @@ langservehub add ../packages/pirate
 langservehub add rag/chroma-rag
 
 # start the server
-langservehub serve
+poetry run langservehub serve
 ```
 
 ## Data Format
