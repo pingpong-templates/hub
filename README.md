@@ -6,29 +6,23 @@ Packages that can be easily hosted by LangServe using the `langserve` cli.
 
 Still working through some global virtual environment bugs for the cli. For now, the following works for me:
 ```bash
+# install custom versions of langserve and langchain
 pip install --upgrade langservehub
 
 # this is only required because this repo is currently private
 export GITHUB_PAT="<github-personal-access-token>"
 
 langservehub new my-app
-cd my-app/packages
+cd my-app
 
-# download a package for editing
-langservehub download simple/pirate
-
-# install it in the app
-cd ../app
 poetry install
-langservehub add ../packages/pirate
 
-# also add a url package
-langservehub add rag/chroma-rag
+# if you have problems with poe, use `poetry run poe ...` instead
+poe add simple/pirate
 
-# start the server
-# needs to be `poetry run` currently because otherwise it'll use your
-# global instance, which doesn't have the inner packages installed
-poetry run langservehub serve
+poe list
+
+poe start
 ```
 
 ## Data Format
@@ -48,21 +42,8 @@ This allows us to identify which module and attribute to import as the chain/run
 
 ### Apps (with installed langserve packages)
 
-Let's say you add the pirate package with `langserve add simple/pirate`.
+Let's say you add the pirate package with `poe add simple/pirate`.
 
-This adds a `poetry` dependency like:
-```
-[tool.poetry.dependencies.pirate]
-git = "https://github.com/langchain-ai/langserve-hub.git"
-subdirectory = "simple/pirate"
-```
+First this downloads the simple/pirate package to simple/pirate
 
-And also mounts the path like
-```
-[tool.langserve.paths]
-"/simple/pirate" = [
-    "pirate",
-    "chain",
-]
-```
-Where `pirate` is the module, and `chain` is the attr (i.e. `from pirate import chain`)
+Then this adds a `poetry` path dependency, which gets picked up from `add_package_routes`.
