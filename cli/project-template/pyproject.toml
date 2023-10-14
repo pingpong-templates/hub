@@ -21,7 +21,8 @@ pygithub = "^2.1.1"
 [tool.poe.tasks.start]
 cmd="poetry run uvicorn app.server:app --reload --port $port"
 args = [
-    {name = "port", help = "port to run on", default = "8000"}
+    {name = "port", help = "port to run on", default = "8000"},
+    {name = "host", help = "host to run on", default = "127.0.0.1"}
 ]
 
 [tool.poe.tasks.add]
