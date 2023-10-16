@@ -9,7 +9,7 @@ from tomllib import loads as loads_toml
 from tomli_w import dump as dump_toml
 from urllib import request
 
-import subprocess
+import shutil
 
 import base64
 import asyncio
@@ -63,13 +63,11 @@ app = typer.Typer(no_args_is_help=True, add_completion=False)
 
 
 @app.command()
-def new(
-    name: Annotated[
-        Optional[str], typer.Argument(help="The name of the folder to create")
-    ] = None
-):
+def new(name: Annotated[str, typer.Argument(help="The name of the folder to create")]):
     # copy over template from ./project-template
-    download("cli/project-template", name)
+    project_template_dir = Path(__file__).parent.parent / "project_template"
+    destination_dir = Path.cwd() / name
+    shutil.copytree(project_template_dir, destination_dir)
 
 
 def download(
