@@ -767,7 +767,7 @@ server = ["fastapi (>=0.90.1)", "sse-starlette (>=1.3.0,<2.0.0)"]
 type = "git"
 url = "https://github.com/langchain-ai/langserve"
 reference = "erick/langservehub"
-resolved_reference = "afa51d5f22e65ffa05fd9f4be90fc0532ff282f0"
+resolved_reference = "36f65278201dc6dec6fcbcbb6e06ad2832b727cd"
 
 [[package]]
 name = "langsmith"
