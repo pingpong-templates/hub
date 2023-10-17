@@ -34,8 +34,6 @@ args = [
     {name = "api_path", help = "The API path to mount", default = ""}
 ]
 [tool.poe.tasks.remove]
-# poetry remove package
-# remove folder
 script="langserve.scripts:remove"
 args = [
     {name = "path", help = "api path", positional = true},

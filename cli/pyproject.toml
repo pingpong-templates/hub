@@ -9,12 +9,6 @@ include = [{path="project_template/**/*", format="wheel"}]
 [tool.poetry.dependencies]
 python = "^3.11"
 typer = "^0.9.0"
-tomli-w = "^1.0.0"
-fastapi = "^0.103.2"
-langserve = "^0.0.8"
-uvicorn = "^0.23.2"
-sse-starlette = "^1.6.5"
-pygithub = "^2.1.1"
 
 [tool.poetry.scripts]
 langservehub = "langservehub.cli:app"
