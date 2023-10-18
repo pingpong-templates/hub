@@ -2,11 +2,11 @@
 
 Packages that can be easily hosted by LangServe using the `langserve` cli.
 
-## Hacky How-To
+## Using LangServe Hub
 
-Still working through some global virtual environment bugs for the cli. For now, the following works for me:
+You can install the `langservehub` CLI and use it as follows:
 ```bash
-# install custom versions of langserve and langchain
+# install langservehub CLI
 pip install --upgrade langservehub
 
 # this is only required because this repo is currently private
@@ -18,12 +18,40 @@ cd my-app
 poetry install
 
 # if you have problems with poe, use `poetry run poe ...` instead
+
+# adding packages from https://github.com/langchain-ai/langserve-hub
 poe add simple/pirate
+
+# adding custom GitHub repo packages
+poe add --repo=hwchase17/chain-of-verification
+
+# with a custom api mount point (defaults to `/{package_name}`)
+poe add simple/translator --api_path=/my/custom/path/translator
 
 poe list
 
 poe start
+^C
+
+# remove packages by their api path:
+poe remove my/custom/path/translator
 ```
+
+## Creating New Packages
+
+You can also create new packages with the `langservehub package new` command
+
+```bash
+# starting from this directory in langserve-hub
+langservehub package new simple/newpackage
+> Package Description []: My description
+> Github Repo [langchain-ai/langserve-hub]: 
+> Module Name [new_package]:
+```
+
+Now you can edit the chain in `simple/newpackage/newpackage/chain.py` and put up a PR!
+
+Your package will be usable as `poe add simple/newpackage` when it's merged in.
 
 ## Data Format
 
