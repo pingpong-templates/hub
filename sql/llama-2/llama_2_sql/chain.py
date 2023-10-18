@@ -77,5 +77,3 @@ chain = (
     | prompt_response
     | llama2_chat_replicate
 )
-
-print(chain.invoke({"question": "What team is Klay Thompson on?"}))
