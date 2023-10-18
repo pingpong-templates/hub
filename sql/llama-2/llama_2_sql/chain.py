@@ -1,21 +1,27 @@
 from langchain.llms import Replicate
-from langchain.chat_models import ChatOpenAI
 from langchain.schema.output_parser import StrOutputParser
 from langchain.schema.runnable import RunnablePassthrough
 from langchain.prompts import ChatPromptTemplate
 
-# make sure to set REPLICATE_API_KEY in your environment
+# make sure to set REPLICATE_API_TOKEN in your environment
 
 # use llama-2-13b model in replicate
 replicate_id = "meta/llama-2-13b-chat:f4e2de70d66816a838a89eeeb621910adffb0dd0baba3976c96980970978018d"
 llama2_chat_replicate = Replicate(
-    model=replicate_id, input={"temperature": 0.01, "max_length": 500, "top_p": 1}
+    model=replicate_id,
+    model_kwargs={"temperature": 0.01, "max_length": 500, "top_p": 1},
 )
 
 
 from langchain.utilities import SQLDatabase
 
-db = SQLDatabase.from_uri("sqlite:///nba_roster.db", sample_rows_in_table_info=0)
+from pathlib import Path
+
+db_path = Path(__file__).parent / "nba_roster.db"
+rel = db_path.relative_to(Path.cwd())
+db_string = f"sqlite:///{rel}"
+
+db = SQLDatabase.from_uri(db_string, sample_rows_in_table_info=0)
 
 
 def get_schema(_):
@@ -71,3 +77,5 @@ chain = (
     | prompt_response
     | llama2_chat_replicate
 )
+
+print(chain.invoke({"question": "What team is Klay Thompson on?"}))
