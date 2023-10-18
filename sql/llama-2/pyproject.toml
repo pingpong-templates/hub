@@ -1,0 +1,20 @@
+[tool.poetry]
+name = "llama-2"
+version = "0.1.0"
+description = ""
+authors = []
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+langchain = ">=0.0.313"
+replicate = "^0.15.4"
+
+[tool.langserve]
+export_module = "llama_2_sql.chain"
+export_attr = "chain"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
