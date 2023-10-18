@@ -67,17 +67,18 @@ def package_new(
         installation_command = f"poe add --repo={github_repo} {relative_path}"
 
     package_name_split = name.split("/")
+    package_name_last = (
+        package_name_split[-2]
+        if len(package_name_split) > 1 and package_name_split[-1] == ""
+        else package_name_split[-1]
+    )
     default_package_name = re.sub(
         r"[^a-zA-Z0-9_]",
         "_",
-        (
-            package_name_split[-2]
-            if len(package_name_split) > 1 and package_name_split[-1] == ""
-            else package_name_split[-1]
-        ),
+        package_name_last,
     )
 
-    package_name = name
+    package_name = package_name_last
     export_module = typer.prompt("Module Name", default=default_package_name)
 
     # replace template strings
@@ -97,7 +98,7 @@ def package_new(
     readme = destination_dir / "README.md"
     readme_contents = readme.read_text()
     readme.write_text(
-        readme_contents.replace("__package_name__", package_name)
+        readme_contents.replace("__package_name_last__", package_name_last)
         .replace("__installation_command__", installation_command)
         .replace("__package_description__", package_description)
     )

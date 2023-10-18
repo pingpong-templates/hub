@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "simple/squawk"
+name = "squawk"
 version = "0.1.0"
 description = ""
 authors = []

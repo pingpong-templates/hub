@@ -1,4 +1,4 @@
-# __package_name__
+# __package_path__
 __package_description__
 
 ## Installation
