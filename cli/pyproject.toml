@@ -1,10 +1,13 @@
 [tool.poetry]
 name = "langservehub"
-version = "0.1.5"
+version = "0.1.6"
 description = ""
 authors = ["Erick Friis <erick@langchain.dev>"]
 readme = "README.md"
-include = [{path="project_template/**/*", format="wheel"}]
+include = [
+    {path="project_template/**/*", format="wheel"},
+    {path="package_template/**/*", format="wheel"}
+]
 
 [tool.poetry.dependencies]
 python = "^3.11"
