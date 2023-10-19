@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "ollama"
+version = "0.1.0"
+description = ""
+authors = []
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.11"
+langchain = ">=0.0.313"
+
+[tool.langserve]
+export_module = "ollama.chain"
+export_attr = "chain"
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
