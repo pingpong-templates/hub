@@ -40,15 +40,12 @@ You can also create new packages with the `langservehub package new` command
 
 ```bash
 # starting from this directory in langserve-hub
-langservehub package new simple/newpackage
-> Package Description []: My description
-> Github Repo [langchain-ai/langserve-hub]: 
-> Module Name [new_package]:
+langservehub package new simple-newpackage
 ```
 
-Now you can edit the chain in `simple/newpackage/newpackage/chain.py` and put up a PR!
+Now you can edit the chain in `simple-newpackage/simple_newpackage/chain.py` and put up a PR!
 
-Your package will be usable as `poe add simple/newpackage` when it's merged in.
+Your package will be usable as `poe add --repo=pingpong-templates/hub simple-newpackage` when it's merged in.
 
 ## Data Format
 
@@ -67,8 +64,8 @@ This allows us to identify which module and attribute to import as the chain/run
 
 ### Apps (with installed langserve packages)
 
-Let's say you add the pirate package with `poe add simple/pirate`.
+Let's say you add the pirate package with `poe add --repo=pingpong-templates/hub simple-pirate`.
 
-First this downloads the simple/pirate package to simple/pirate
+First this downloads the simple-pirate package to pirate
 
 Then this adds a `poetry` path dependency, which gets picked up from `add_package_routes`.
