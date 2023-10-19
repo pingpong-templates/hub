@@ -9,9 +9,6 @@ You can install the `langservehub` CLI and use it as follows:
 # install langservehub CLI
 pip install --upgrade langservehub
 
-# this is only required because this repo is currently private
-export GITHUB_PAT="<github-personal-access-token>"
-
 langservehub new my-app
 cd my-app
 
@@ -19,14 +16,14 @@ poetry install
 
 # if you have problems with poe, use `poetry run poe ...` instead
 
-# adding packages from https://github.com/langchain-ai/langserve-hub
-poe add simple/pirate
+# add the simple-pirate package
+poe add --repo=pingpong-templates/hub simple-pirate
 
-# adding custom GitHub repo packages
+# adding other GitHub repo packages, defaults to repo root
 poe add --repo=hwchase17/chain-of-verification
 
 # with a custom api mount point (defaults to `/{package_name}`)
-poe add simple/translator --api_path=/my/custom/path/translator
+poe add --repo=pingpong-templates/hub simple-translator --api_path=/my/custom/path/translator
 
 poe list
 
