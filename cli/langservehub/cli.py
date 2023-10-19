@@ -36,8 +36,8 @@ def _git_get_root(destination_dir: Optional[Path]) -> Optional[Path]:
 def new(name: Annotated[str, typer.Argument(help="The name of the folder to create")]):
     # copy over template from ../project_template
     project_template_dir = Path(__file__).parent.parent / "project_template"
-    destination_dir = Path.cwd() / name
-    shutil.copytree(project_template_dir, destination_dir)
+    destination_dir = Path.cwd() / name if name != "." else Path.cwd()
+    shutil.copytree(project_template_dir, destination_dir, dirs_exist_ok=name == ".")
 
 
 package_app = typer.Typer(no_args_is_help=True, add_completion=False)
@@ -48,12 +48,14 @@ app.add_typer(package_app, name="package")
 def package_new(
     name: Annotated[str, typer.Argument(help="The name of the folder to create")]
 ):
+    computed_name = name if name != "." else Path.cwd().name
+    destination_dir = Path.cwd() / name if name != "." else Path.cwd()
+
     # copy over template from ../package_template
     project_template_dir = Path(__file__).parent.parent / "package_template"
-    destination_dir = Path.cwd() / name
-    shutil.copytree(project_template_dir, destination_dir)
+    shutil.copytree(project_template_dir, destination_dir, dirs_exist_ok=name == ".")
 
-    package_name_split = name.split("/")
+    package_name_split = computed_name.split("/")
     package_name_last = (
         package_name_split[-2]
         if len(package_name_split) > 1 and package_name_split[-1] == ""
