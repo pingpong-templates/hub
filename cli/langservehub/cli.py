@@ -53,19 +53,6 @@ def package_new(
     destination_dir = Path.cwd() / name
     shutil.copytree(project_template_dir, destination_dir)
 
-    git_root = _git_get_root(destination_dir)
-    relative_path = None if git_root is None else destination_dir.relative_to(git_root)
-
-    package_description: str = typer.prompt("Package Description", default="")
-    github_repo: str = typer.prompt("Github Repo", default="langchain-ai/langserve-hub")
-
-    if relative_path is None:
-        installation_command = f"# <Fill this out before publishing>\n# poe add ..."
-    elif github_repo == "langchain-ai/langserve-hub":
-        installation_command = f"poe add {relative_path}"
-    else:
-        installation_command = f"poe add --repo={github_repo} {relative_path}"
-
     package_name_split = name.split("/")
     package_name_last = (
         package_name_split[-2]
@@ -78,20 +65,15 @@ def package_new(
         package_name_last,
     )
 
-    package_name = package_name_last
-    export_module = typer.prompt("Module Name", default=default_package_name)
-
     # replace template strings
     pyproject = destination_dir / "pyproject.toml"
     pyproject_contents = pyproject.read_text()
     pyproject.write_text(
-        pyproject_contents.replace("__package_name__", package_name)
-        .replace("__export_module__", export_module)
-        .replace("__package_description__", package_description)
+        pyproject_contents.replace("__package_name__", default_package_name)
     )
 
     # move module folder
-    package_dir = destination_dir / export_module
+    package_dir = destination_dir / default_package_name
     shutil.move(destination_dir / "package_template", package_dir)
 
     # replace readme
@@ -99,8 +81,6 @@ def package_new(
     readme_contents = readme.read_text()
     readme.write_text(
         readme_contents.replace("__package_name_last__", package_name_last)
-        .replace("__installation_command__", installation_command)
-        .replace("__package_description__", package_description)
     )
 
 

@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "llama-2"
+name = "llama-2-sql"
 version = "0.1.0"
 description = ""
 authors = []
