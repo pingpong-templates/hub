@@ -6,7 +6,7 @@ authors = ["Your Name <you@example.com>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = "^3.8"
 sse-starlette = "^1.6.5"
 langserve = {git = "https://github.com/langchain-ai/langserve", rev = "erick/langservehub"}
 tomli-w = "^1.0.0"
