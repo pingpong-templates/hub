@@ -12,6 +12,10 @@ This will require some system-level package installations, e.g., on Mac:
 brew install tesseract poppler
 ```
 
+## Embedding, LLM
+
+Be sure that `OPENAI_API_KEY` is set in order to the OpenAI model(s) for embedding and answer synthesis.
+
 ## Installation
 
 ```bash
