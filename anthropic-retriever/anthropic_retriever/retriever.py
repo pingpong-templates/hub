@@ -1,4 +1,5 @@
 from langchain.retrievers import WikipediaRetriever
+from langchain.tools import tool
 
 # This is used to tell the model how to best use the retriever.
 
