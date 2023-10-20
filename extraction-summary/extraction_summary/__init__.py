@@ -1,3 +1,3 @@
-from chroma_rag.chain import chain
+from extraction_summary.chain import chain
 
 __all__ = ["chain"]

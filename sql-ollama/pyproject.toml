@@ -1,16 +1,16 @@
 [tool.poetry]
-name = "ollama"
+name = "sql-ollama"
 version = "0.1.0"
 description = ""
-authors = []
+authors = ["Lance Martin <lance@langchain.dev>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
-python = "^3.11"
+python = ">=3.8.1,<4.0"
 langchain = ">=0.0.313"
 
 [tool.langserve]
-export_module = "ollama.chain"
+export_module = "ollama"
 export_attr = "chain"
 
 [build-system]
