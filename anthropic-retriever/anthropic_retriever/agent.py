@@ -24,6 +24,6 @@ chain = RunnablePassthrough.assign(
 agent_chain = RunnableMap({
     "partial_completion": chain,
     "intermediate_steps": lambda x: x['intermediate_steps']
-}) | _parse_output
+}) | parse_output
 
 executor = AgentExecutor(agent=agent_chain, tools = [search], verbose=True)
