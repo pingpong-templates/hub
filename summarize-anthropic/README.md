@@ -10,4 +10,18 @@ To do this, we can use various promps from LangChain hub, such as:
 Claude2 has a large (100k token) context window, allowing us to summarize documents over 100 pages.
 
 # Invoke
-chain.invoke({"text": doc.page_content})
+
+You can call this summarization template.
+
+TO DO: Add clarification on how to spin this up.
+
+```
+summarization_chain = RemoteRunnable('localhost:8000/anthropic-summarization')
+
+# Load a paper to use
+path = "docs/"
+loader = UnstructuredPDFLoader(path+"LLaVA.pdf")
+doc = loader.load()[0]
+
+summarization_chain.invoke({"text": doc.page_content})
+```
