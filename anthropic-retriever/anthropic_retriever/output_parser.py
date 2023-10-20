@@ -1,4 +1,8 @@
 from langchain.schema.agent import AgentAction, AgentFinish
+import re
+
+from .agent_scratchpad import _format_docs
+
 
 def extract_between_tags(tag: str, string: str, strip: bool = True) -> str:
     ext_list = re.findall(f"<{tag}\s?>(.+?)</{tag}\s?>", string, re.DOTALL)
@@ -15,6 +19,13 @@ def parse_output(outputs):
     steps = outputs["intermediate_steps"]
     search_query = extract_between_tags('search_query', partial_completion + '</search_query>') 
     if search_query is None:
-        return AgentFinish({"output": steps}, log=partial_completion)
+        docs = []
+        str_output = ""
+        for action, observation in steps:
+            docs.extend(observation)
+            str_output += action.log
+            str_output += '</search_query>' + _format_docs(observation)
+        str_output += partial_completion
+        return AgentFinish({"docs": docs, "output": str_output}, log=partial_completion)
     else:
         return AgentAction(tool="search", tool_input=search_query, log=partial_completion)
