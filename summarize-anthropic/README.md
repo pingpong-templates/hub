@@ -16,7 +16,8 @@ You can call this summarization template.
 TO DO: Add clarification on how to spin this up.
 
 ```
-summarization_chain = RemoteRunnable('localhost:8000/anthropic-summarization')
+from langserve.client import RemoteRunnable
+summarization_chain = RemoteRunnable('localhost:8000/summarize-anthropic')
 
 # Load a paper to use
 path = "docs/"
