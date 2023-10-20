@@ -1,3 +1,3 @@
-from chroma_rag.chain import chain
+from summarize_anthropic.chain import chain
 
 __all__ = ["chain"]
