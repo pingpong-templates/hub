@@ -15,7 +15,7 @@ prompt = ChatPromptTemplate.from_messages([
 ])
 prompt = prompt.partial(retriever_description=retriever_description)
 
-model = ChatAnthropic(model="claude-2", temperature=0)
+model = ChatAnthropic(model="claude-2", temperature=0, max_tokens_to_sample=1000)
 
 chain = RunnablePassthrough.assign(
     agent_scratchpad=lambda x: format_agent_scratchpad(x['intermediate_steps'])
