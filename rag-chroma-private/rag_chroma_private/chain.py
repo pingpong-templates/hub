@@ -24,6 +24,7 @@ retriever = vectorstore.as_retriever()
 # Optionally, pull from the Hub
 # from langchain import hub
 # prompt = hub.pull("rlm/rag-prompt")
+# Or, define your own:
 template = """Answer the question based only on the following context:
 {context}
 
@@ -32,6 +33,7 @@ Question: {question}
 prompt = ChatPromptTemplate.from_template(template)
 
 # LLM
+# Select the LLM that you downloaded
 ollama_llm = "llama2:13b-chat"
 model = ChatOllama(model=ollama_llm)
 
