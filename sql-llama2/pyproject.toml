@@ -1,19 +1,18 @@
 [tool.poetry]
-name = "llama-2-sql"
+name = "llama2"
 version = "0.1.0"
 description = ""
-authors = []
+authors = ["Lance Martin <lance@langchain.dev>"]
 readme = "README.md"
 
 [tool.poetry.dependencies]
 python = ">=3.8.1,<4.0"
 langchain = ">=0.0.313, <0.1"
-replicate = "^0.15.4"
+replicate = ">=0.15.4"
 
 [tool.langserve]
-export_module = "llama_2_sql.chain"
+export_module = "sql_llama2"
 export_attr = "chain"
-
 
 [build-system]
 requires = ["poetry-core"]
