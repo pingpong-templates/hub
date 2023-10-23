@@ -1,3 +1,3 @@
-from summarize_anthropic.chain import chain
+from anthropic_function.chain import chain
 
 __all__ = ["chain"]
