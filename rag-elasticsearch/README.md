@@ -4,6 +4,21 @@ Using Langserve and ElasticSearch to build a RAG search example for answering qu
 
 Relies on sentence transformer `MiniLM-L6-v2` for embedding passages and questions.
 
+## Running Elasticsearch
+
+There are a number of ways to run Elasticsearch. The easiest way for local development is to use Docker:
+
+```bash
+docker run -p 9200:9200 \
+  -e "discovery.type=single-node" \
+  -e "xpack.security.enabled=false" \
+  -e "xpack.security.http.ssl.enabled=false" \
+  -e "xpack.license.self_generated.type=trial" \
+  docker.elastic.co/elasticsearch/elasticsearch:8.10.0
+```
+
+This will run Elasticsearch on port 9200. You can then check that it is running by visiting [http://localhost:9200](http://localhost:9200).
+
 ## Documents
 
 To load fictional workplace documents, run the following command from the root of this repository:
