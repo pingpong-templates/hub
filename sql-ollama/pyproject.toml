@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "ollama"
+name = "sql_ollama"
 version = "0.1.0"
 description = ""
 authors = ["Lance Martin <lance@langchain.dev>"]

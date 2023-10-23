@@ -18,3 +18,4 @@ export_attr = "chain"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+langchain serve run
