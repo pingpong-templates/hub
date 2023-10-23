@@ -11,6 +11,5 @@ schema = {
     }
 }
 
+# This is LLMChain, which implements invoke 
 chain = create_tagging_chain(schema, model)
-
-
