@@ -34,5 +34,8 @@ vectorstore = ElasticsearchStore.from_documents(
         model_name="all-MiniLM-L6-v2", model_kwargs={"device": "cpu"}
     ),
     es_url="http://localhost:9200",
+    # es_cloud_id="<cloud_id>",
+    # es_username="<username>",
+    # es_password="<password>",
     index_name="workplace-search-example",
 )

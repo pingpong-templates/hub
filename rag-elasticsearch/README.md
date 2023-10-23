@@ -6,7 +6,32 @@ Relies on sentence transformer `MiniLM-L6-v2` for embedding passages and questio
 
 ## Running Elasticsearch
 
-There are a number of ways to run Elasticsearch. The easiest way for local development is to use Docker:
+There are a number of ways to run Elasticsearch.
+
+### Elastic Cloud
+
+Create a free trial account on [Elastic Cloud](https://cloud.elastic.co/registration?utm_source=langchain&utm_content=langserve).
+
+Once you have created an account, you can create a deployment. With a deployment, you can update the `chain.py` file to use Elastic Cloud credentials.
+
+```python
+vectorstore = ElasticsearchStore(
+    embedding=HuggingFaceEmbeddings(
+        model_name="all-MiniLM-L6-v2", model_kwargs={"device": "cpu"}
+    ),
+    # es_url="http://localhost:9200",
+    # found in the Elastic Cloud deployment console
+    es_cloud_id="<cloud_id>",
+    es_username="elastic",
+    # found in the Elastic Cloud deployment console, under security
+    es_password="<password>",
+    index_name="workplace-search-example",
+)
+```
+
+### Docker
+
+For local development, you can use Docker:
 
 ```bash
 docker run -p 9200:9200 \
