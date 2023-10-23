@@ -37,30 +37,18 @@ cypher_prompt = ChatPromptTemplate.from_messages(
             "system",
             "Given an input question, convert it to a Cypher query. No pre-amble.",
         ),
-        MessagesPlaceholder(variable_name="history"),
         ("human", cypher_template),
     ]
 )
 
-cypher_chain = (
+cypher_response = (
     RunnablePassthrough.assign(
         schema=lambda _: graph.get_schema,
-        history=RunnableLambda(lambda x: memory.load_memory_variables(x)["history"]),
     )
     | cypher_prompt
     | cypher_llm.bind(stop=["\nCypherResult:"])
     | StrOutputParser()
 )
-
-
-# Handle Cypher query memory
-def save(input_output):
-    output = {"output": cypher_validation(input_output.pop("output"))}
-    memory.save_context(input_output, output)
-    return output["output"]
-
-
-cypher_response_memory = RunnablePassthrough.assign(output=cypher_chain) | save
 
 # Generate natural language response based on database results
 response_template = """Based on the the question, Cypher query, and Cypher response, write a natural language response:
@@ -78,11 +66,12 @@ response_prompt = ChatPromptTemplate.from_messages(
     ]
 )
 
-response_chain = (
-    RunnablePassthrough.assign(query=cypher_response_memory)
+chain = (
+    RunnablePassthrough.assign(query=cypher_response)
     | RunnablePassthrough.assign(
-        response=lambda x: graph.query(x["query"]),
+        response=lambda x: graph.query(cypher_validation(x["query"])),
     )
     | response_prompt
     | qa_llm
+    | StrOutputParser()
 )
