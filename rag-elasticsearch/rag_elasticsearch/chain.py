@@ -7,16 +7,14 @@ from langchain.schema import format_document
 from typing import Tuple, List
 from operator import itemgetter
 from .prompts import CONDENSE_QUESTION_PROMPT, LLM_CONTEXT_PROMPT, DOCUMENT_PROMPT
+from .connection import es_connection_details
 
 # Setup connecting to Elasticsearch
 vectorstore = ElasticsearchStore(
+    **es_connection_details,
     embedding=HuggingFaceEmbeddings(
         model_name="all-MiniLM-L6-v2", model_kwargs={"device": "cpu"}
     ),
-    es_url="http://localhost:9200",
-    # es_cloud_id="<cloud_id>",
-    # es_username="<username>",
-    # es_password="<password>",
     index_name="workplace-search-example",
 )
 retriever = vectorstore.as_retriever()

@@ -12,21 +12,12 @@ There are a number of ways to run Elasticsearch.
 
 Create a free trial account on [Elastic Cloud](https://cloud.elastic.co/registration?utm_source=langchain&utm_content=langserve).
 
-Once you have created an account, you can create a deployment. With a deployment, you can update the `chain.py` file to use Elastic Cloud credentials.
+Once you have created an account, you can create a deployment. With a deployment, you can use these environment variables to connect to your Elasticsearch instance:
 
-```python
-vectorstore = ElasticsearchStore(
-    embedding=HuggingFaceEmbeddings(
-        model_name="all-MiniLM-L6-v2", model_kwargs={"device": "cpu"}
-    ),
-    # es_url="http://localhost:9200",
-    # found in the Elastic Cloud deployment console
-    es_cloud_id="<cloud_id>",
-    es_username="elastic",
-    # found in the Elastic Cloud deployment console, under security
-    es_password="<password>",
-    index_name="workplace-search-example",
-)
+```bash
+export ELASTIC_CLOUD_ID = <ClOUD_ID>
+export ELASTIC_USERNAME = <ClOUD_USERNAME>
+export ELASTIC_PASSWORD = <ClOUD_PASSWORD>
 ```
 
 ### Docker
@@ -43,6 +34,12 @@ docker run -p 9200:9200 \
 ```
 
 This will run Elasticsearch on port 9200. You can then check that it is running by visiting [http://localhost:9200](http://localhost:9200).
+
+With a deployment, you can use these environment variables to connect to your Elasticsearch instance:
+
+```bash
+export ES_URL = "http://localhost:9200"
+```
 
 ## Documents
 
