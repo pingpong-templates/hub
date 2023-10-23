@@ -21,7 +21,7 @@ def reciprocal_rank_fusion(results: list[list], k=60):
     reranked_results = [(loads(doc), score) for doc, score in sorted(fused_scores.items(), key=lambda x: x[1], reverse=True)]
     return reranked_results 
 
-pinecone.init(api_key="2101f36d-026a-4f56-a77a-ba868fd6c932",environment="us-west1-gcp")
+pinecone.init(api_key="...", environment="...")
 
 prompt = hub.pull('langchain-ai/rag-fusion-query-generation')
 
