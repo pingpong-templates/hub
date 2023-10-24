@@ -51,7 +51,6 @@ prompt = ChatPromptTemplate.from_messages(
 
 # Fulltext index query
 def map_to_database(entities: Entities) -> Optional[str]:
-    print(entities)
     result = ""
     for entity in entities.names:
         response = graph.query(
@@ -62,7 +61,6 @@ def map_to_database(entities: Entities) -> Optional[str]:
             result += f"{entity} maps to {response[0]['result']} in database\n"
         except IndexError:
             pass
-    print(result)
     return result
 
 entity_chain = create_structured_output_chain(
