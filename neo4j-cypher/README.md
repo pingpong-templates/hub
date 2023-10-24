@@ -1,6 +1,6 @@
 # Neo4j Knowledge Graph with OpenAI LLMs
 
-This template allows you to chat with Neo4j graph database in natural langugae in private, using an OpenAI LLM.
+This template allows you to chat with Neo4j graph database in natural language, using an OpenAI LLM.
 
 ## Set up Environment
 
