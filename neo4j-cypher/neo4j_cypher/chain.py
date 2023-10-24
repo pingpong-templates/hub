@@ -1,11 +1,9 @@
 from langchain.chat_models import ChatOpenAI
 from langchain.graphs import Neo4jGraph
-from langchain.memory import ConversationBufferWindowMemory
-from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain.prompts import ChatPromptTemplate
 from langchain.schema.output_parser import StrOutputParser
 from langchain.schema.runnable import RunnablePassthrough
 from langchain.chains.graph_qa.cypher_utils import CypherQueryCorrector, Schema
-from langchain.schema.runnable import RunnableLambda
 
 # Connection to Neo4j
 graph = Neo4jGraph()
@@ -20,9 +18,6 @@ cypher_validation = CypherQueryCorrector(corrector_schema)
 # LLMs
 cypher_llm = ChatOpenAI(model_name="gpt-4", temperature=0.0)
 qa_llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.0)
-
-# Memory
-memory = ConversationBufferWindowMemory(return_messages=True, k=5)
 
 # Generate Cypher statement based on natural language input
 cypher_template = """Based on the Neo4j graph schema below, write a Cypher query that would answer the user's question:
