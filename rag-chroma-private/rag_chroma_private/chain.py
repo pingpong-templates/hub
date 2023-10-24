@@ -1,4 +1,3 @@
-import os
 from langchain.vectorstores import Chroma
 from langchain.chat_models import ChatOllama
 from langchain.prompts import ChatPromptTemplate
@@ -17,9 +16,7 @@ text_splitter = RecursiveCharacterTextSplitter(chunk_size=500, chunk_overlap=0)
 all_splits = text_splitter.split_documents(data)
 
 # Add to vectorDB
-dir = os.getcwd()
 vectorstore = Chroma.from_documents(documents=all_splits, 
-                                    persist_directory=dir,
                                     collection_name="rag-private",
                                     embedding=GPT4AllEmbeddings(),
                                     )
