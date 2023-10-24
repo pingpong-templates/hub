@@ -6,13 +6,14 @@ from langchain.embeddings import OpenAIEmbeddings
 from langchain.schema.output_parser import StrOutputParser
 from langchain.schema.runnable import RunnablePassthrough, RunnableParallel
 from langchain.vectorstores import Chroma
+from pathlib import Path
 
-dir = os.getcwd()
+dir = Path(__file__).parent
 vectorstore = Chroma.from_texts(
-    ["harrison worked at kensho"], 
+    ["harrison worked at kensho"],
     persist_directory=dir,
     collection_name="rag-chroma",
-    embedding=OpenAIEmbeddings()
+    embedding=OpenAIEmbeddings(),
 )
 retriever = vectorstore.as_retriever()
 
