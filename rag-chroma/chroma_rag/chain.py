@@ -11,6 +11,7 @@ dir = os.getcwd()
 vectorstore = Chroma.from_texts(
     ["harrison worked at kensho"], 
     persist_directory=dir,
+    collection_name="rag-chroma",
     embedding=OpenAIEmbeddings()
 )
 retriever = vectorstore.as_retriever()

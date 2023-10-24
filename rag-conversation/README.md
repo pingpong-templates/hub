@@ -21,7 +21,7 @@ cd my-app
 * When we add a template, we update the Poetry config file with the necessary dependencies.
 * It also automatically installed these template dependencies in your Poetry environment
 ```
-langchain serve add conversational-rag
+langchain serve add rag-conversation
 ```
 
 `Start FastAPI server`

@@ -20,6 +20,7 @@ all_splits = text_splitter.split_documents(data)
 dir = os.getcwd()
 vectorstore = Chroma.from_documents(documents=all_splits, 
                                     persist_directory=dir,
+                                    collection_name="rag-private",
                                     embedding=GPT4AllEmbeddings(),
                                     )
 retriever = vectorstore.as_retriever()

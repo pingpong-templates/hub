@@ -23,6 +23,7 @@ all_splits = text_splitter.split_documents(data)
 dir = os.getcwd()
 vectorstore = Chroma.from_documents(documents=all_splits, 
                                     persist_directory=dir,
+                                    collection_name="rag-conversation",
                                     embedding=OpenAIEmbeddings(),
                                     )
 retriever = vectorstore.as_retriever()
