@@ -11,6 +11,7 @@ langchain = ">=0.0.313, <0.1"
 tiktoken = ">=0.5.1"
 chromadb = ">=0.4.14"
 gpt4all = ">=1.0.8"
+beautifulsoup4 = ">=4.12.2"
 
 [tool.langserve]
 export_module = "rag_chroma_private"
