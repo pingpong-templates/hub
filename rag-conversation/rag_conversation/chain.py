@@ -1,4 +1,5 @@
 from typing import Tuple, List
+from pydantic import BaseModel
 from operator import itemgetter
 from langchain.vectorstores import Chroma
 from langchain.chat_models import ChatOpenAI
@@ -56,6 +57,11 @@ def _format_chat_history(chat_history: List[Tuple]) -> str:
         buffer += "\n" + "\n".join([human, ai])
     return buffer
 
+# User input 
+class ChatHistory(BaseModel):
+    chat_history: List[Tuple[str, str]] 
+    question: str
+
 _inputs = RunnableMap(
     standalone_question=RunnableBranch(
         # If input includes chat_history, we condense it with the follow-up question
@@ -71,7 +77,7 @@ _inputs = RunnableMap(
         RunnableLambda(itemgetter("question"))
         
     )
-)
+).with_types(input_type=ChatHistory)
 
 # Context includes retrieved docs and the current question
 _context = {
