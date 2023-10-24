@@ -68,4 +68,4 @@ _context = {
     "context": itemgetter("standalone_question") | retriever | _combine_documents,
     "question": lambda x: x["standalone_question"]
 }
-conversational_qa_chain = _inputs | _context | ANSWER_PROMPT | ChatOpenAI()
+chain = _inputs | _context | ANSWER_PROMPT | ChatOpenAI()
