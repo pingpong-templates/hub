@@ -1,11 +1,17 @@
+
+from typing import List, Optional
+
 from langchain.chat_models import ChatOpenAI
 from langchain.graphs import Neo4jGraph
-from langchain.memory import ConversationBufferWindowMemory
-from langchain.prompts import ChatPromptTemplate, MessagesPlaceholder
+from langchain.prompts import ChatPromptTemplate
 from langchain.schema.output_parser import StrOutputParser
 from langchain.schema.runnable import RunnablePassthrough
 from langchain.chains.graph_qa.cypher_utils import CypherQueryCorrector, Schema
-from langchain.schema.runnable import RunnableLambda
+from langchain.chains.openai_functions import create_structured_output_chain
+try:
+    from pydantic.v1.main import BaseModel, Field
+except ImportError:
+    from pydantic.main import BaseModel, Field
 
 # Connection to Neo4j
 graph = Neo4jGraph()
@@ -21,13 +27,53 @@ cypher_validation = CypherQueryCorrector(corrector_schema)
 cypher_llm = ChatOpenAI(model_name="gpt-4", temperature=0.0)
 qa_llm = ChatOpenAI(model_name="gpt-3.5-turbo", temperature=0.0)
 
-# Memory
-memory = ConversationBufferWindowMemory(return_messages=True, k=5)
+# Extract entities from text
+class Entities(BaseModel):
+    """Identifying information about entities."""
+
+    names: List[str] = Field(
+        ...,
+        description="All the person, organization, or business entities that appear in the text",
+    )
+
+prompt = ChatPromptTemplate.from_messages(
+    [
+        (
+            "system",
+            "You are extracting organization and person entities from the text.",
+        ),
+        (
+            "human",
+            "Use the given format to extract information from the following input: {question}",
+        ),
+    ]
+)
+
+# Fulltext index query
+def map_to_database(entities: Entities) -> Optional[str]:
+    print(entities)
+    result = ""
+    for entity in entities.names:
+        response = graph.query(
+            "CALL db.index.fulltext.queryNodes('entity', $entity + '*', {limit:1})"
+            " YIELD node,score RETURN node.name AS result",
+            {"entity":entity})
+        try:
+            result += f"{entity} maps to {response[0]['result']} in database\n"
+        except IndexError:
+            pass
+    print(result)
+    return result
+
+entity_chain = create_structured_output_chain(
+    Entities, qa_llm, prompt
+)
 
 # Generate Cypher statement based on natural language input
 cypher_template = """Based on the Neo4j graph schema below, write a Cypher query that would answer the user's question:
 {schema}
-
+Entities in the question map to the following database values:
+{entities_list}
 Question: {question}
 Cypher query:"""
 
@@ -42,7 +88,9 @@ cypher_prompt = ChatPromptTemplate.from_messages(
 )
 
 cypher_response = (
-    RunnablePassthrough.assign(
+    RunnablePassthrough.assign(names=entity_chain)
+    | RunnablePassthrough.assign(
+        entities_list=lambda x: map_to_database(x['names']['function']),
         schema=lambda _: graph.get_schema,
     )
     | cypher_prompt

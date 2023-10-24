@@ -1,6 +1,7 @@
-# Neo4j Knowledge Graph with OpenAI LLMs
+# Neo4j Knowledge Graph: Enhanced mapping from text to database using a full-text index
 
-This template allows you to chat with Neo4j graph database in natural langugae in private, using an OpenAI LLM.
+This template allows you to chat with Neo4j graph database in natural language, using an OpenAI LLM.
+The addition of the full-text index ensures efficient mapping of values from text to database for more precise Cypher statement generation.
 
 ## Set up Environment
 
