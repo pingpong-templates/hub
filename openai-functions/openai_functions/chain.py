@@ -11,7 +11,7 @@ class Overview(BaseModel):
 
 # Function definition
 model = ChatOpenAI()
-overview_extraction_function = [convert_pydantic_to_openai_function(Overview)]
+function = [convert_pydantic_to_openai_function(Overview)]
 chain = model.bind(
-    functions=overview_extraction_function, function_call={"name": "Overview"}
+    functions=function, function_call={"name": "Overview"}
 ).with_types(input_type=str)
