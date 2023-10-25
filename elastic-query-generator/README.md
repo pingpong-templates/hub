@@ -10,12 +10,19 @@ The Elasticsearch client must have permissions for index listing, mapping descri
 
 ## Setup
 
-See [here](https://www.elastic.co/guide/en/elasticsearch/reference/current/docker.html) for instructions on how to run Elasticsearch locally.
+## Installing Elasticsearch
 
-In addition to the instructions there, you will want to run
+There are a number of ways to run Elasticsearch.
 
-> export ELASTIC_SEARCH_SERVER="https://elastic:pass@localhost:9200"
+### Elastic Cloud
 
-Note that if you already have an Elastic cluster running you can just replace the code to call out to that.
+Create a free trial account on [Elastic Cloud](https://cloud.elastic.co/registration?utm_source=langchain&utm_content=langserve).
+
+With a deployment, update the connection string.
+
+Password and connection (elasticsearch url) can be found on the deployment console.  
+
+```bash
+> export ELASTIC_SEARCH_SERVER="https://elastic:<password>@<es-url>"
 
 If you want to populate the DB with some example info, you can run `python ingest.py`.
