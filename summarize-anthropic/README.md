@@ -1,6 +1,6 @@
-# Summarize PDFs with Anthropic
+# Summarize documents with Anthropic
 
-This template uses Anthropic's Claude2 to summarize documents.
+This template uses Anthropic's `Claude2` to summarize documents.
 
 To do this, we can use various prompts from LangChain hub, such as:
 
