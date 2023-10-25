@@ -20,20 +20,24 @@ Be sure that `OPENAI_API_KEY` is set in your enviorment.
 
 ## Adding the template
 
-Create your LangServe app:
+Install the langchain package
 ```
-langchain serve new my-app
-cd my-app
-```
-
-Add template:
-```
-langchain serve add openai-functions
+pip install -e packages/openai_functions
 ```
 
-Start server:
+Edit app/server.py to add that package to the routes
 ```
-langchain start
+from fastapi import FastAPI
+from langserve import add_routes 
+from openai_functions.chain import chain
+
+app = FastAPI()
+add_routes(app, chain)
+```
+
+Run the app
+```
+python app/server.py
 ```
 
 You can use this template in the Playground:
