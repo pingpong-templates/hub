@@ -36,4 +36,8 @@ Start server:
 langchain start
 ```
 
-See Jupyter notebook `openai_functions` for various way to connect to the template.
+You can use this template in the Playground:
+
+http://127.0.0.1:8000/openai-functions/playground/
+
+Also, see Jupyter notebook `openai_functions` for various other ways to connect to the template.
