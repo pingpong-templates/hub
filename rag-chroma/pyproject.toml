@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "chroma-rag"
+name = "rag-chroma"
 version = "0.1.0"
 description = ""
 authors = ["Erick Friis <erick@langchain.dev>"]
@@ -13,7 +13,7 @@ tiktoken = ">=0.5.1"
 chromadb = ">=0.4.14"
 
 [tool.langserve]
-export_module = "chroma_rag"
+export_module = "rag_chroma"
 export_attr = "chain"
 
 [build-system]
